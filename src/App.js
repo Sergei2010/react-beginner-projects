@@ -1,3 +1,4 @@
+import React from 'react';
 import './index.scss';
 
 const questions = [
@@ -22,37 +23,58 @@ const questions = [
   },
 ];
 
-function Result() {
+function Result({ correct }) {
   return (
     <div className="result">
-      <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" />
-      <h2>Вы отгадали 3 ответа из 10</h2>
-      <button>Попробовать снова</button>
+      <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Icon" />
+      <h2>Вы отгадали { correct } ответа из { questions.length }</h2>
+      <a href='/'>
+        <button>Попробовать снова</button>
+      </a>
     </div>
   );
 }
 
-function Game() {
+function Game({ step, question, onClickVariant }) {
+  const persentage = Math.round((step / questions.length) * 100);
   return (
     <>
       <div className="progress">
-        <div style={{ width: '50%' }} className="progress__inner"></div>
+        <div style={ { width: `${persentage}%` } } className="progress__inner"></div>
       </div>
-      <h1>Что такое useState?</h1>
+      <h1>{ question.title }</h1>
       <ul>
-        <li>Это функция для хранения данных компонента</li>
-        <li>Это глобальный стейт</li>
-        <li>Это когда на ты никому не нужен</li>
+        { question.variants.map((text, index) => (
+          <li onClick={ () => onClickVariant(index) } key={ text }>{ text }</li>
+        )) }
       </ul>
     </>
   );
 }
 
 function App() {
+
+  const [step, setStep] = React.useState(0);
+  const [correct, setCorrect] = React.useState(0);
+  const question = questions[step];
+
+  const onClickVariant = (index) => {
+    setStep(step + 1);
+
+    if (index === question.correct) {
+      setCorrect(correct + 1);
+    }
+  };
+
   return (
     <div className="App">
-      <Game />
-      {/* <Result /> */}
+      { step !== questions.length
+        ? <Game step={ step } question={ question }
+          // @ts-ignore
+          onClickVariant={ onClickVariant } />
+        :
+        // @ts-ignore
+        <Result correct={ correct } /> }
     </div>
   );
 }
