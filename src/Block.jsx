@@ -5,14 +5,14 @@ const defaultCurrencies = ['RUB', 'USD', 'EUR', 'GBP'];
 export const Block = ({ value, currency, onChangeValue, onChangeCurrency }) => (
   <div className="block">
     <ul className="currencies">
-      {defaultCurrencies.map((cur) => (
+      { defaultCurrencies.map((cur) => (
         <li
-          onClick={() => onChangeCurrency(cur)}
-          className={currency === cur ? 'active' : ''}
-          key={cur}>
-          {cur}
+          onClick={ () => onChangeCurrency(cur) }
+          className={ currency === cur ? 'active' : '' }
+          key={ cur }>
+          { cur }
         </li>
-      ))}
+      )) }
       <li>
         <svg height="50px" viewBox="0 0 50 50" width="50px">
           <rect fill="none" height="50" width="50" />
@@ -21,10 +21,10 @@ export const Block = ({ value, currency, onChangeValue, onChangeCurrency }) => (
       </li>
     </ul>
     <input
-      onChange={(e) => onChangeValue(e.target.value)}
-      value={value}
+      onChange={ (e) => onChangeValue(e.target.value) }
+      value={ !value ? '' : value }
       type="number"
-      placeholder={0}
+      placeholder={ '' }
     />
   </div>
 );
